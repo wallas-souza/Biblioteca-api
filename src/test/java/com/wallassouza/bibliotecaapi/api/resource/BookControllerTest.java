@@ -1,6 +1,7 @@
 package com.wallassouza.bibliotecaapi.api.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wallassouza.bibliotecaapi.api.resource.controller.BookController;
 import com.wallassouza.bibliotecaapi.api.resource.dto.bookdto.BookDTO;
 import com.wallassouza.bibliotecaapi.api.resource.exception.BusinessException;
 import com.wallassouza.bibliotecaapi.api.resource.model.Book;
@@ -35,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@WebMvcTest
+@WebMvcTest(controllers = BookController.class)
 @AutoConfigureMockMvc
 public class BookControllerTest {
 

@@ -41,19 +41,6 @@ public class BookController {
         return modelMapper.map(entidade, BookDTO.class);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErros handleValidationExceptions(MethodArgumentNotValidException ex) {
-        BindingResult bindingResult = ex.getBindingResult();
-        return new ApiErros(bindingResult);
-    }
-
-    @ExceptionHandler(BusinessException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErros handleBusinessException(BusinessException ex) {
-        return new ApiErros(ex);
-    }
-
     @GetMapping("{id}")
     public BookDTO get(@PathVariable Long id) {
         return bookService.getById(id)
