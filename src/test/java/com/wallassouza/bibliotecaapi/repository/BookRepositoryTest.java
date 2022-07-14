@@ -2,7 +2,6 @@ package com.wallassouza.bibliotecaapi.repository;
 
 import com.wallassouza.bibliotecaapi.api.resource.model.Book;
 import com.wallassouza.bibliotecaapi.api.resource.repository.BookRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +41,7 @@ public class BookRepositoryTest {
         assertThat(exists).isTrue();
     }
 
-    private Book createNewBook(String isbn) {
+    public static Book createNewBook(String isbn) {
         return Book.builder().titulo("aventuras").autor("fulado").isbn(isbn).build();
     }
 

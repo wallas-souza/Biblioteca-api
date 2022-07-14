@@ -3,6 +3,7 @@ package com.wallassouza.bibliotecaapi.api.resource.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,4 +24,6 @@ public class Book {
     private String autor;
     @Column
     private String isbn;
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+    private List<Loan> loans;
 }

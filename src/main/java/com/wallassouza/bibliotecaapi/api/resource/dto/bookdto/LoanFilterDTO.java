@@ -5,23 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-
-public class LoanDTO {
-
-    private Long id;
-    @NotEmpty
+@NoArgsConstructor
+@Builder
+public class LoanFilterDTO {
     private String isbn;
-    @NotEmpty
     private String customer;
-    @NotEmpty
-    private String email;
-    @NotEmpty
-    private BookDTO book;
-
 }

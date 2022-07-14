@@ -1,36 +1,33 @@
 package com.wallassouza.bibliotecaapi.api.resource.controller;
 
 import com.wallassouza.bibliotecaapi.api.resource.dto.bookdto.BookDTO;
-import com.wallassouza.bibliotecaapi.api.resource.exception.ApiErros;
-import com.wallassouza.bibliotecaapi.api.resource.exception.BusinessException;
+import com.wallassouza.bibliotecaapi.api.resource.dto.bookdto.LoanDTO;
 import com.wallassouza.bibliotecaapi.api.resource.model.Book;
+import com.wallassouza.bibliotecaapi.api.resource.model.Loan;
 import com.wallassouza.bibliotecaapi.api.resource.service.BookService;
+import com.wallassouza.bibliotecaapi.api.resource.service.LoanService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/livros")
+@RequiredArgsConstructor
 public class BookController {
 
-    private BookService bookService;
-    public ModelMapper modelMapper;
+    private final BookService bookService;
+    private final ModelMapper modelMapper;
 
-    public BookController(BookService service, ModelMapper mapper) {
-        this.bookService = service;
-        this.modelMapper = mapper;
-    }
+    private final LoanService loanService;
 
 
     @PostMapping
@@ -77,5 +74,21 @@ public class BookController {
                 .map(entidade -> modelMapper.map(entidade, BookDTO.class))
                 .collect(Collectors.toList());
         return new PageImpl<BookDTO>( list, pageable, resultado.getTotalElements());
+    }
+
+    @GetMapping("{id}/loans")
+    public Page<LoanDTO> loansByBook(@PathVariable Long id, Pageable pageable){
+        Book book = bookService.getById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Page<Loan> result = loanService.getLoansByBook(book, pageable);
+        List<LoanDTO> list = result.getContent()
+                .stream()
+                .map(loan -> {
+                    Book loanBook = loan.getBook();
+                    BookDTO bookDTO = modelMapper.map(loanBook, BookDTO.class);
+                    LoanDTO loanDTO = modelMapper.map(loan, LoanDTO.class);
+                    loanDTO.setBook(bookDTO);
+                    return loanDTO;
+                }).collect(Collectors.toList());
+        return new PageImpl<LoanDTO>(list,pageable,result.getTotalElements());
     }
 }
