@@ -6,6 +6,7 @@ import com.wallassouza.bibliotecaapi.api.resource.dto.bookdto.BookDTO;
 import com.wallassouza.bibliotecaapi.api.resource.exception.BusinessException;
 import com.wallassouza.bibliotecaapi.api.resource.model.Book;
 import com.wallassouza.bibliotecaapi.api.resource.service.BookService;
+import com.wallassouza.bibliotecaapi.api.resource.service.LoanService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,9 @@ public class BookControllerTest {
 
     @MockBean
     BookService service;
+
+    @MockBean
+    LoanService loanService;
 
     @Test
     @DisplayName("Deve criar um livro com sucesso")
